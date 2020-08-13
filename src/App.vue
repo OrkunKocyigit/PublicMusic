@@ -5,19 +5,10 @@
       <button v-on:click="createList">Start</button>
     </div>
     <div v-else>
-      <iframe width="0" height="0" :src="currentUrl" frameborder="0" allow="autoplay"></iframe>
-      <div v-if="hidden">
-        <button v-on:click="hidden = !hidden">Reveal</button>
-        <button v-on:click="nextSong">Skip</button>
-      </div>
-      <div v-else>
-        <button v-on:click="nextSong">Favorite</button>
-        <button v-on:click="nextSong">Go to Source</button>
-        <button v-on:click="nextSong">Next Song</button>
-      </div>
+      <Player :song="currentSong" :onSkipSong="onSkipSong"></Player>
     </div>
     <div>
-      <button v-for="genre in genres" :key="genre.id">{{genre.name}}</button>
+      <button v-for="genre in genres" :key="genre.id">{{ genre.name }}</button>
     </div>
   </div>
 </template>
@@ -25,6 +16,9 @@
 <script>
 import songsJSON from "./assets/songs";
 import genresJSON from "./assets/genres";
+import * as d3 from "d3-array";
+import Player from "./components/Player";
+
 export default {
   name: "App",
   data: () => {
@@ -36,26 +30,28 @@ export default {
       index: 0,
     };
   },
+  components: {
+    Player,
+  },
   methods: {
-    nextSong() {
+    onSkipSong() {
       this.index += 1;
+      if (this.index >= this.songs.length) {
+        this.loopList();
+      }
     },
     createList() {
       this.start = true;
+      this.loopList();
+    },
+    loopList() {
+      this.index = 0;
+      this.songs = d3.shuffle(this.songs);
     },
   },
   computed: {
-    currentUrl() {
-      let song = this.songs[this.index];
-      let url = "";
-      switch (song.provider) {
-        case "youtube":
-          url =
-            "https://www.youtube.com/embed/" +
-            song.id +
-            "?autoplay=1&controls=0&start=0&end=30&fs=0&modestbranding=1&cc_load_policy=1";
-      }
-      return url;
+    currentSong() {
+      return this.songs[this.index];
     },
   },
 };
