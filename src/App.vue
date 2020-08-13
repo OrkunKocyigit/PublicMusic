@@ -1,16 +1,30 @@
 <template>
-  <div id="app">
-    <div v-if="!start">
-      Start discovering new music
-      <button v-on:click="createList">Start</button>
-    </div>
-    <div v-else>
-      <Player :song="currentSong" :onSkipSong="onSkipSong"></Player>
-    </div>
-    <div>
-      <Genre v-for="genre in genres" :key="genre.id" :genre="genre"></Genre>
-    </div>
-  </div>
+  <b-container
+    id="app"
+    class="vh-100 d-flex align-items-center justify-content-md-center"
+    fluid="lg"
+  >
+    <b-card class="w-100">
+      <b-row v-show="!start" aling-h="center" cols="1">
+        <b-col class="mb-5">
+          Start discovering new music
+        </b-col>
+        <b-col>
+          <button v-on:click="createList">Start</button>
+        </b-col>
+      </b-row>
+      <b-row>
+        <div v-if="start">
+          <Player :song="currentSong" :onSkipSong="onSkipSong"></Player>
+        </div>
+      </b-row>
+      <b-row>
+        <b-col>
+          <Genre v-for="genre in genres" :key="genre.id" :genre="genre"></Genre>
+        </b-col>
+      </b-row>
+    </b-card>
+  </b-container>
 </template>
 
 <script>
