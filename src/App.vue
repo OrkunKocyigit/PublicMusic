@@ -8,7 +8,7 @@
       <Player :song="currentSong" :onSkipSong="onSkipSong"></Player>
     </div>
     <div>
-      <button v-for="genre in genres" :key="genre.id">{{ genre.name }}</button>
+      <Genre v-for="genre in genres" :key="genre.id" :genre="genre"></Genre>
     </div>
   </div>
 </template>
@@ -18,6 +18,7 @@ import songsJSON from "./assets/songs";
 import genresJSON from "./assets/genres";
 import * as d3 from "d3-array";
 import Player from "./components/Player";
+import Genre from "./components/Genre";
 
 export default {
   name: "App",
@@ -32,6 +33,7 @@ export default {
   },
   components: {
     Player,
+    Genre,
   },
   methods: {
     onSkipSong() {

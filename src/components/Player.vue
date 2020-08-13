@@ -24,9 +24,6 @@ export default {
       active: false,
     };
   },
-  components: {
-    YoutubeProviderVue,
-  },
   computed: {
     providerComponent() {
       let provider;
